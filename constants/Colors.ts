@@ -16,6 +16,7 @@ export const lightColors = {
   mercenaryGuild: '#E76F51',
   firstTemporal: '#2A9D8F',
   drakeHold: '#E9C46A',
+  northernTribes: '#90A5C1',
 };
 
 export const darkColors = {
@@ -36,6 +37,7 @@ export const darkColors = {
   mercenaryGuild: '#E76F51',
   firstTemporal: '#4ABEB0',
   drakeHold: '#E9C46A',
+  northernTribes: '#90A5C1',
 };
 
 export default {

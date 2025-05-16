@@ -44,5 +44,14 @@ export const factions: Faction[] = [
     description: 'Beast tamers who ride massive drakes into battle with savage ferocity.',
     iconUrl: 'https://images.pexels.com/photos/4153330/pexels-photo-4153330.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     bannerUrl: 'https://images.pexels.com/photos/4153333/pexels-photo-4153333.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+  },
+  {
+    id: 'northern-tribes',
+    name: 'Northern Tribes',
+    key: 'northernTribes',
+    color: '#90A5C1',
+    description: 'Fierce warriors from the frozen north, combining Orc brutality with Varank cunning.',
+    iconUrl: 'https://images.pexels.com/photos/1366919/pexels-photo-1366919.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    bannerUrl: 'https://images.pexels.com/photos/917494/pexels-photo-917494.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
   }
 ];
