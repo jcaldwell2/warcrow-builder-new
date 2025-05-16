@@ -319,6 +319,119 @@ const units: Unit[] = [
         description: 'This unit has a 4+ ward save against damage caused by shooting attacks.'
       }
     ]
+  },
+  
+  // Northern Tribes
+  {
+    id: 'nt-battle-scarred',
+    name: 'Battle-Scarred',
+    faction: 'northern-tribes',
+    factionKey: 'northernTribes',
+    type: 'Troops',
+    points: 40,
+    movement: 5,
+    combat: 4,
+    shooting: 2,
+    bravery: 4,
+    wounds: 1,
+    description: 'Hardened Orc warriors bearing the scars of countless battles.',
+    imageUrl: 'https://images.pexels.com/photos/4215839/pexels-photo-4215839.jpeg',
+    abilities: [
+      {
+        name: 'Raging',
+        description: 'This unit gains +1 to Combat rolls while wounded.'
+      }
+    ]
+  },
+  {
+    id: 'nt-orc-hunters',
+    name: 'Orc Hunters',
+    faction: 'northern-tribes',
+    factionKey: 'northernTribes',
+    type: 'Troops',
+    points: 20,
+    movement: 6,
+    combat: 3,
+    shooting: 4,
+    bravery: 3,
+    wounds: 1,
+    description: 'Skilled trackers and hunters of the northern wastes.',
+    imageUrl: 'https://images.pexels.com/photos/4215113/pexels-photo-4215113.jpeg'
+  },
+  {
+    id: 'nt-skin-changers',
+    name: 'Skin Changers',
+    faction: 'northern-tribes',
+    factionKey: 'northernTribes',
+    type: 'Troops',
+    points: 35,
+    movement: 7,
+    combat: 4,
+    shooting: 0,
+    bravery: 5,
+    wounds: 2,
+    description: 'Varank warriors who can take on bestial forms.',
+    imageUrl: 'https://images.pexels.com/photos/4215040/pexels-photo-4215040.jpeg',
+    abilities: [
+      {
+        name: 'Fearless',
+        description: 'This unit never needs to take bravery tests.'
+      },
+      {
+        name: 'Scout',
+        description: 'This unit can be deployed anywhere on the battlefield that is more than 9" from enemy units.'
+      }
+    ]
+  },
+  {
+    id: 'nt-ahlwardt',
+    name: 'Ahlwardt, Ice Bear',
+    faction: 'northern-tribes',
+    factionKey: 'northernTribes',
+    type: 'Hero',
+    points: 60,
+    movement: 6,
+    combat: 5,
+    shooting: 0,
+    bravery: 6,
+    wounds: 5,
+    description: 'A legendary Varank warrior who leads the Skin Changers into battle.',
+    imageUrl: 'https://images.pexels.com/photos/4215104/pexels-photo-4215104.jpeg',
+    abilities: [
+      {
+        name: 'Berserker Rage',
+        description: 'When this unit charges, it gains +2 to Combat rolls until the end of the turn.'
+      },
+      {
+        name: 'Elite Commander',
+        description: 'Skin Changer units within 12" can reroll failed Combat rolls.'
+      }
+    ]
+  },
+  {
+    id: 'nt-warg-riders',
+    name: 'Warg Riders',
+    faction: 'northern-tribes',
+    factionKey: 'northernTribes',
+    type: 'Cavalry',
+    points: 35,
+    movement: 8,
+    combat: 4,
+    shooting: 3,
+    bravery: 4,
+    wounds: 2,
+    description: 'Orc cavalry mounted on fierce wargs, perfect for hit-and-run tactics.',
+    imageUrl: 'https://images.pexels.com/photos/4215120/pexels-photo-4215120.jpeg',
+    abilities: [
+      {
+        name: 'Bloodlust',
+        description: 'This unit can reroll charge rolls.'
+      },
+      {
+        name: 'Rugged Terrain Experts',
+        description: 'This unit ignores penalties for moving through difficult terrain.'
+      }
+    ]
   }
 ];
 
