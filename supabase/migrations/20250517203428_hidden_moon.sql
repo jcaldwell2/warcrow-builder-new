@@ -1,23 +1,4 @@
-/*
-  # Create authentication tables
-
-  1. New Tables
-    - `user_profiles`
-      - `id` (uuid, primary key)
-      - `email` (text)
-      - `created_at` (timestamp)
-      - `updated_at` (timestamp)
-      - `is_super_admin` (boolean)
-      - `raw_app_meta_data` (jsonb)
-      - `raw_user_meta_data` (jsonb)
-      - `phone` (text)
-      - `is_anonymous` (boolean)
-
-  2. Security
-    - Enable RLS on `user_profiles` table
-    - Add policies for authenticated users to read and update their own data
-*/
-
+-- Create the table if it does not exist
 CREATE TABLE IF NOT EXISTS user_profiles (
   id uuid PRIMARY KEY,
   email text,
@@ -30,16 +11,24 @@ CREATE TABLE IF NOT EXISTS user_profiles (
   is_anonymous boolean DEFAULT false
 );
 
+-- Enable Row-Level Security
 ALTER TABLE user_profiles ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Users can read own profile"
-  ON user_profiles
-  FOR SELECT
-  TO authenticated
-  USING (auth.uid() = id);
+-- Safely recreate policies
+DO $$
+BEGIN
+  DROP POLICY IF EXISTS "Users can read own profile" ON user_profiles;
+  DROP POLICY IF EXISTS "Users can update own profile" ON user_profiles;
 
-CREATE POLICY "Users can update own profile"
-  ON user_profiles
-  FOR UPDATE
-  TO authenticated
-  USING (auth.uid() = id);
+  CREATE POLICY "Users can read own profile"
+    ON user_profiles
+    FOR SELECT
+    TO authenticated
+    USING (auth.uid() = id);
+
+  CREATE POLICY "Users can update own profile"
+    ON user_profiles
+    FOR UPDATE
+    TO authenticated
+    USING (auth.uid() = id);
+END $$;
