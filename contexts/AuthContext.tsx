@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
+import { supabase, isBrowser } from '@/lib/supabase';
 import { Session, User } from '@supabase/supabase-js';
 
 type AuthContextType = {
@@ -34,6 +34,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!isBrowser) {
+      setLoading(false);
+      return;
+    }
+
+    // Initialize session
+    const initSession = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        setSession(session);
+        setUser(session?.user ?? null);
+        
+        if (session?.user) {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', session.user.id)
+            .single();
+            
+          setProfile(profile);
+        }
+      } catch (error) {
+        console.error('Error initializing session:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initSession();
+
     // Listen for auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (_event, session) => {
@@ -51,8 +81,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         } else {
           setProfile(null);
         }
-        
-        setLoading(false);
       }
     );
 
@@ -115,4 +143,4 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       {children}
     </AuthContext.Provider>
   );
-};
+}
