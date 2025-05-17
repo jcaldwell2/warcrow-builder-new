@@ -1,23 +1,4 @@
-/*
-  # Authentication and User Profile Schema
-
-  1. New Tables
-    - `user_profiles`
-      - `id` (uuid, primary key, references auth.users)
-      - `email` (text)
-      - `created_at` (timestamp)
-      - `updated_at` (timestamp)
-      - `is_super_admin` (boolean)
-      - `raw_app_meta_data` (jsonb)
-      - `raw_user_meta_data` (jsonb)
-      - `phone` (text)
-      - `is_anonymous` (boolean)
-
-  2. Security
-    - Enable RLS
-    - Add policies for authenticated users
-*/
-
+-- Create table if it doesn't exist
 CREATE TABLE IF NOT EXISTS user_profiles (
   id uuid PRIMARY KEY REFERENCES auth.users ON DELETE CASCADE,
   email text,
@@ -30,16 +11,37 @@ CREATE TABLE IF NOT EXISTS user_profiles (
   is_anonymous boolean DEFAULT false
 );
 
+-- Enable RLS
 ALTER TABLE user_profiles ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Users can read own profile"
-  ON user_profiles
-  FOR SELECT
-  TO authenticated
-  USING (auth.uid() = id);
+-- Conditionally create policy: Users can read own profile
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies
+    WHERE policyname = 'Users can read own profile'
+      AND tablename = 'user_profiles'
+  ) THEN
+    CREATE POLICY "Users can read own profile"
+      ON user_profiles
+      FOR SELECT
+      TO authenticated
+      USING (auth.uid() = id);
+  END IF;
+END $$;
 
-CREATE POLICY "Users can update own profile"
-  ON user_profiles
-  FOR UPDATE
-  TO authenticated
-  USING (auth.uid() = id);
+-- Conditionally create policy: Users can update own profile
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies
+    WHERE policyname = 'Users can update own profile'
+      AND tablename = 'user_profiles'
+  ) THEN
+    CREATE POLICY "Users can update own profile"
+      ON user_profiles
+      FOR UPDATE
+      TO authenticated
+      USING (auth.uid() = id);
+  END IF;
+END $$;
