@@ -1,22 +1,4 @@
-/*
-  # User Profiles and Game Statistics Schema
-
-  1. New Tables
-    - `profiles`
-      - `id` (uuid, primary key, references auth.users)
-      - `username` (text, unique)
-      - `avatar_url` (text)
-      - `created_at` (timestamp)
-      - `updated_at` (timestamp)
-      - `wins` (integer)
-      - `losses` (integer)
-      - `draws` (integer)
-
-  2. Security
-    - Enable RLS
-    - Add policies for public viewing and authenticated updates
-*/
-
+-- Create table if not exists
 CREATE TABLE IF NOT EXISTS profiles (
   id uuid PRIMARY KEY REFERENCES auth.users ON DELETE CASCADE,
   username text UNIQUE,
@@ -28,16 +10,37 @@ CREATE TABLE IF NOT EXISTS profiles (
   draws integer DEFAULT 0
 );
 
+-- Enable RLS
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Public profiles are viewable by everyone"
-  ON profiles
-  FOR SELECT
-  TO public
-  USING (true);
+-- Conditionally create "Public profiles are viewable by everyone"
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies
+    WHERE policyname = 'Public profiles are viewable by everyone'
+      AND tablename = 'profiles'
+  ) THEN
+    CREATE POLICY "Public profiles are viewable by everyone"
+      ON profiles
+      FOR SELECT
+      TO public
+      USING (true);
+  END IF;
+END $$;
 
-CREATE POLICY "Users can update own profile"
-  ON profiles
-  FOR UPDATE
-  TO public
-  USING (auth.uid() = id);
+-- Conditionally create "Users can update own profile"
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies
+    WHERE policyname = 'Users can update own profile'
+      AND tablename = 'profiles'
+  ) THEN
+    CREATE POLICY "Users can update own profile"
+      ON profiles
+      FOR UPDATE
+      TO public
+      USING (auth.uid() = id);
+  END IF;
+END $$;
