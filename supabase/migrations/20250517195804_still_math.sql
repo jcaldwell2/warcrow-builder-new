@@ -1,3 +1,33 @@
+/*
+  # Create profiles table and policies
+
+  1. New Tables
+    - `profiles` table for storing user profile information
+      - `id` (uuid, primary key)
+      - `username` (text, unique)
+      - `avatar_url` (text)
+      - `created_at` (timestamptz)
+      - `updated_at` (timestamptz)
+      - `wins` (integer)
+      - `losses` (integer)
+      - `draws` (integer)
+
+  2. Security
+    - Enable RLS
+    - Add policy for public profile viewing
+    - Add policy for users to update their own profile
+*/
+
+-- Drop existing policies if they exist
+DO $$
+BEGIN
+  DROP POLICY IF EXISTS "Public profiles are viewable by everyone" ON profiles;
+  DROP POLICY IF EXISTS "Users can update own profile" ON profiles;
+EXCEPTION
+  WHEN undefined_object THEN
+    NULL;
+END $$;
+
 -- Create table if not exists
 CREATE TABLE IF NOT EXISTS profiles (
   id uuid PRIMARY KEY REFERENCES auth.users ON DELETE CASCADE,
@@ -13,34 +43,15 @@ CREATE TABLE IF NOT EXISTS profiles (
 -- Enable RLS
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 
--- Conditionally create "Public profiles are viewable by everyone"
-DO $$
-BEGIN
-  IF NOT EXISTS (
-    SELECT 1 FROM pg_policies
-    WHERE policyname = 'Public profiles are viewable by everyone'
-      AND tablename = 'profiles'
-  ) THEN
-    CREATE POLICY "Public profiles are viewable by everyone"
-      ON profiles
-      FOR SELECT
-      TO public
-      USING (true);
-  END IF;
-END $$;
+-- Create policies
+CREATE POLICY "Public profiles are viewable by everyone"
+  ON profiles
+  FOR SELECT
+  TO public
+  USING (true);
 
--- Conditionally create "Users can update own profile"
-DO $$
-BEGIN
-  IF NOT EXISTS (
-    SELECT 1 FROM pg_policies
-    WHERE policyname = 'Users can update own profile'
-      AND tablename = 'profiles'
-  ) THEN
-    CREATE POLICY "Users can update own profile"
-      ON profiles
-      FOR UPDATE
-      TO public
-      USING (auth.uid() = id);
-  END IF;
-END $$;
+CREATE POLICY "Users can update own profile"
+  ON profiles
+  FOR UPDATE
+  TO public
+  USING (auth.uid() = id);
