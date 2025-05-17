@@ -12,7 +12,7 @@ import {
   Platform
 } from 'react-native';
 import { useTheme } from '@/contexts/ThemeContext';
-import { useSearchParams, useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import { ChevronDown, Save, Trash2, Plus } from 'lucide-react-native';
 import FactionSelector from '@/components/builder/FactionSelector';
 import UnitSection from '@/components/builder/UnitSection';
@@ -24,7 +24,7 @@ import AddUnitModal from '@/components/builder/AddUnitModal';
 export default function BuilderScreen() {
   const { colors } = useTheme();
   const router = useRouter();
-  const params = useSearchParams();
+  const params = useLocalSearchParams();
   const { factions } = useFactions();
   const { armies, saveArmy, getArmy } = useSavedArmies();
   
