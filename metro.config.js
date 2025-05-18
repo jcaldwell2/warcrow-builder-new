@@ -1,9 +1,6 @@
-const { getDefaultConfig } = require('expo/metro-config');
+const { getDefaultConfig } = require('@expo/metro-config');
 
-const config = getDefaultConfig(__dirname, {
-  // Enable CSS support
-  isCSSEnabled: true
-});
+const config = getDefaultConfig(__dirname);
 
 // Configure the Metro bundler
 config.resolver = {
