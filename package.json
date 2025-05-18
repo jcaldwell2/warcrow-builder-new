@@ -24,8 +24,6 @@
     "@react-native-async-storage/async-storage": "^1.19.5",
     "@react-native-community/cli-server-api": "^11.3.9",
     "@react-native-community/slider": "4.4.2",
-    "@react-navigation/bottom-tabs": "^7.2.0",
-    "@react-navigation/native": "^7.0.14",
     "@supabase/functions-js": "2.3.0",
     "@supabase/gotrue-js": "^2.62.0",
     "@supabase/postgrest-js": "^1.9.0",
