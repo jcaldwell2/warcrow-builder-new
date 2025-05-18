@@ -24,23 +24,47 @@ config.resolver.sourceExts = [
 ];
 
 // Configure module resolution
-config.resolver.resolverMainFields = ['browser', 'main', 'module'];
+config.resolver.resolverMainFields = [
+  'browser',
+  'module',
+  'main',
+];
 
-// Handle anonymous and dynamic imports
+// Handle module resolution
 config.resolver.extraNodeModules = new Proxy({}, {
-  get: (target, name) => path.join(__dirname, `node_modules/${name}`),
+  get: (target, name) => path.join(process.cwd(), `node_modules/${name}`),
 });
 
 // Ensure proper transformation of files
 config.transformer = {
   ...config.transformer,
   assetPlugins: ['expo-asset/tools/hashAssetFiles'],
+  minifierPath: require.resolve('metro-minify-terser'),
 };
 
-// Add project root to watch folders
+// Add project root and node_modules to watch folders
 config.watchFolders = [
-  path.resolve(__dirname, '.'),
+  path.resolve(__dirname),
   path.resolve(__dirname, 'node_modules'),
 ];
+
+// Configure caching
+config.cacheStores = [
+  {
+    name: 'memory',
+  },
+];
+
+// Configure server
+config.server = {
+  ...config.server,
+  enhanceMiddleware: (middleware) => {
+    return (req, res, next) => {
+      // Ensure proper CORS headers for web
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      return middleware(req, res, next);
+    };
+  },
+};
 
 module.exports = config;
