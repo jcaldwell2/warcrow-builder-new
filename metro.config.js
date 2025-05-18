@@ -11,9 +11,9 @@ config.resolver = {
   enableSymlinks: true,
   // Add additional module paths
   nodeModulesPaths: ['./node_modules'],
-  // Add alias for expo/dom/global
+  // Add alias for expo modules core
   extraNodeModules: {
-    'expo/dom/global': require.resolve('expo-modules-core/build/dom/global')
+    'expo-modules-core/build/dom/global': require.resolve('expo-modules-core/build/dom/global')
   }
 };
 
