@@ -69,6 +69,7 @@
     "metro-resolver": "^0.76.8",
     "metro-runtime": "^0.76.8",
     "metro-source-map": "^0.76.8",
+    "metro-transform-worker": "^0.82.3",
     "netlify-cli": "^17.10.1",
     "react-native-svg-transformer": "^1.5.1",
     "serve": "^14.2.1",
