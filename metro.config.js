@@ -13,7 +13,7 @@ config.resolver = {
   nodeModulesPaths: ['./node_modules'],
   // Add alias for expo/dom/global
   extraNodeModules: {
-    'expo/dom/global': require.resolve('expo/build/dom/global')
+    'expo/dom/global': require.resolve('expo-modules-core/build/dom/global')
   }
 };
 
