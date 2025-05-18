@@ -1,10 +1,10 @@
-const { getDefaultConfig } = require('expo/metro-config');
+// Learn more https://docs.expo.io/guides/customizing-metro
+const { getDefaultConfig } = require('@expo/metro-config');
 
-// Get default Expo config
 /** @type {import('expo/metro-config').MetroConfig} */
-const config = getDefaultConfig(__dirname);
-
-// Optional: Add file extensions if you use more than standard ones
-config.resolver.sourceExts.push('cjs');
+const config = getDefaultConfig(__dirname, {
+  // [Web-only]: Enables CSS support in Metro.
+  isCSSEnabled: true,
+});
 
 module.exports = config;
