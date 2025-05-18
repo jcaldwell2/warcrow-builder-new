@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "EXPO_NO_TELEMETRY=1 expo start",
+    "reset": "rm -rf node_modules/.cache .expo && EXPO_NO_TELEMETRY=1 NODE_OPTIONS=--max_old_space_size=4096 expo start --clear",
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
