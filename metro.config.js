@@ -10,7 +10,11 @@ config.resolver = {
   // Enable symlinks for better module resolution
   enableSymlinks: true,
   // Add additional module paths
-  nodeModulesPaths: ['./node_modules']
+  nodeModulesPaths: ['./node_modules'],
+  // Add alias for expo/dom/global
+  extraNodeModules: {
+    'expo/dom/global': require.resolve('expo/build/dom/global')
+  }
 };
 
 // Configure the transformer
