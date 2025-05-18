@@ -12,7 +12,7 @@ import {
   Platform
 } from 'react-native';
 import { useTheme } from '@/contexts/ThemeContext';
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ChevronDown, Save, Trash2, Plus } from 'lucide-react-native';
 import FactionSelector from '@/components/builder/FactionSelector';
 import UnitSection from '@/components/builder/UnitSection';
