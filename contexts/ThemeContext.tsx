@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { useColorScheme } from 'react-native';
 import { lightColors, darkColors } from '@/constants/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -21,37 +21,45 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const systemColorScheme = useColorScheme();
   const [isDark, setIsDark] = useState(systemColorScheme === 'dark');
   const [isLoaded, setIsLoaded] = useState(false);
+  const mounted = useRef(true);
 
   useEffect(() => {
-    // Load theme preference from storage
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
+
+  useEffect(() => {
     const loadThemePreference = async () => {
       try {
         const storedTheme = await AsyncStorage.getItem('theme');
-        if (storedTheme !== null) {
-          setIsDark(storedTheme === 'dark');
-        } else {
-          // Default to system preference if nothing is stored
-          setIsDark(systemColorScheme === 'dark');
+        if (mounted.current) {
+          if (storedTheme !== null) {
+            setIsDark(storedTheme === 'dark');
+          } else {
+            setIsDark(systemColorScheme === 'dark');
+          }
+          setIsLoaded(true);
         }
       } catch (error) {
         console.log('Error loading theme preference', error);
-      } finally {
-        setIsLoaded(true);
+        if (mounted.current) {
+          setIsLoaded(true);
+        }
       }
     };
 
     loadThemePreference();
   }, []);
 
-  // Update theme when system theme changes, but only if user hasn't explicitly set a preference
   useEffect(() => {
     if (!isLoaded) return;
     
     const updateSystemTheme = async () => {
       try {
         const storedTheme = await AsyncStorage.getItem('theme');
-        // Only update from system if user hasn't set a preference
-        if (storedTheme === null) {
+        if (mounted.current && storedTheme === null) {
           setIsDark(systemColorScheme === 'dark');
         }
       } catch (error) {
