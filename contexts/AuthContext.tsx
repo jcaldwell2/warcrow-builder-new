@@ -34,7 +34,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!isBrowser) {
+    if (!isBrowser || !supabase) {
       setLoading(false);
       return;
     }
@@ -91,6 +91,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signIn = async (email: string, password: string) => {
     try {
+      if (!supabase) throw new Error('Supabase client not initialized');
       setError(null);
       const { error } = await supabase.auth.signInWithPassword({
         email,
@@ -105,6 +106,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signUp = async (email: string, password: string) => {
     try {
+      if (!supabase) throw new Error('Supabase client not initialized');
       setError(null);
       const { error } = await supabase.auth.signUp({
         email,
@@ -119,6 +121,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signOut = async () => {
     try {
+      if (!supabase) throw new Error('Supabase client not initialized');
       setError(null);
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
