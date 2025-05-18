@@ -7,6 +7,9 @@ const config = getDefaultConfig(__dirname, {
   isCSSEnabled: true,
 });
 
+// Disable the cache to work around the "store.get is not a function" error
+config.cacheStores = [];
+
 // Add all file extensions used in the project
 config.resolver.sourceExts = [
   'js',
@@ -36,10 +39,11 @@ config.resolver.extraNodeModules = new Proxy({}, {
 });
 
 // Ensure proper transformation of files
+// Ensure we have the correct transformer config
 config.transformer = {
   ...config.transformer,
-  assetPlugins: ['expo-asset/tools/hashAssetFiles'],
-  minifierPath: require.resolve('metro-minify-terser'),
+  unstable_allowRequireContext: true,
+  babelTransformerPath: require.resolve('react-native-svg-transformer'),
 };
 
 // Add project root and node_modules to watch folders
