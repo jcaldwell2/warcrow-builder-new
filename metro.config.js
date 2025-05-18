@@ -23,10 +23,19 @@ config.resolver.sourceExts = [
   'ios.tsx',
 ];
 
+// Configure module resolution
+config.resolver.resolverMainFields = ['browser', 'main', 'module'];
+
+// Handle anonymous and dynamic imports
+config.resolver.extraNodeModules = new Proxy({}, {
+  get: (target, name) => path.join(__dirname, `node_modules/${name}`),
+});
+
 // Ensure proper transformation of files
 config.transformer = {
   ...config.transformer,
   babelTransformerPath: require.resolve('react-native-babel-transformer'),
+  assetPlugins: ['expo-asset/tools/hashAssetFiles'],
 };
 
 // Add project root to watch folders
