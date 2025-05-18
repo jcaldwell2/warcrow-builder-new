@@ -41,6 +41,7 @@
     "expo-system-ui": "~5.0.5",
     "expo-web-browser": "~14.1.5",
     "lucide-react-native": "^0.475.0",
+    "metro-react-native-babel-transformer": "^0.77.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-native": "0.79.1",
