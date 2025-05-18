@@ -19,11 +19,6 @@ import { ThemeProvider } from '@/contexts/ThemeContext';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { isBrowser } from '@/lib/supabase';
 
-// Prevent splash screen from auto-hiding only in browser environment
-if (isBrowser) {
-  SplashScreen.preventAutoHideAsync();
-}
-
 export default function RootLayout() {
   useFrameworkReady();
 
@@ -36,14 +31,18 @@ export default function RootLayout() {
     'Cinzel-Bold': Cinzel_700Bold,
   });
 
-  // Hide splash screen once fonts are loaded (browser only)
+  useEffect(() => {
+    if (isBrowser) {
+      SplashScreen.preventAutoHideAsync();
+    }
+  }, []);
+
   useEffect(() => {
     if (isBrowser && (fontsLoaded || fontError)) {
       SplashScreen.hideAsync();
     }
   }, [fontsLoaded, fontError]);
 
-  // Keep splash screen visible while fonts load (browser only)
   if (isBrowser && !fontsLoaded && !fontError) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#121212' }}>
