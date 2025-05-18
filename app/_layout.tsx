@@ -19,6 +19,10 @@ import { ThemeProvider } from '@/contexts/ThemeContext';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { isBrowser } from '@/lib/supabase';
 
+// Add this to suppress errors during the initial load
+SplashScreen.preventAutoHideAsync()
+  .catch(() => {/* Ignore error */});
+
 export default function RootLayout() {
   useFrameworkReady();
 
@@ -32,18 +36,14 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    if (isBrowser) {
-      SplashScreen.preventAutoHideAsync();
-    }
-  }, []);
-
-  useEffect(() => {
-    if (isBrowser && (fontsLoaded || fontError)) {
-      SplashScreen.hideAsync();
+    if (fontsLoaded || fontError) {
+      // Hide splash screen once fonts are loaded or there's an error
+      SplashScreen.hideAsync().catch(() => {/* Ignore error */});
     }
   }, [fontsLoaded, fontError]);
 
-  if (isBrowser && !fontsLoaded && !fontError) {
+  // If the fonts are not loaded and there is no error, show a loading indicator
+  if (!fontsLoaded && !fontError) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#121212' }}>
         <ActivityIndicator size="large" color="#E8C48E" />
@@ -56,6 +56,7 @@ export default function RootLayout() {
       <ThemeProvider>
         <StatusBar style="light" />
         <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="index" options={{ headerShown: false }} redirect={true} />
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="+not-found" options={{ title: 'Not Found' }} />
