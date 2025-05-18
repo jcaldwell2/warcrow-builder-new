@@ -34,8 +34,8 @@
         "expo-router",
         {
           "origin": "https://acme.com",
-          "asyncRoutes": "development",
-          "typedRoutes": true
+          "asyncRoutes": "development"
+          
         }
       ]
     ],
