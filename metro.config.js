@@ -1,37 +1,9 @@
-const { getDefaultConfig } = require('@expo/metro-config');
+const { getDefaultConfig } = require('expo/metro-config');
 
+// Get default Expo config
 const config = getDefaultConfig(__dirname);
 
-// Configure the Metro bundler
-config.resolver = {
-  ...config.resolver,
-  sourceExts: ['js', 'jsx', 'json', 'ts', 'tsx', 'cjs'],
-  assetExts: ['png', 'jpg', 'jpeg', 'gif', 'webp', 'ttf'],
-  // Enable symlinks for better module resolution
-  enableSymlinks: true,
-  // Add additional module paths
-  nodeModulesPaths: ['./node_modules'],
-  // Add alias for expo modules core
-  extraNodeModules: {
-    'expo-modules-core/build/dom/global': require.resolve('expo-modules-core/build/dom/global')
-  }
-};
-
-// Configure the transformer
-config.transformer = {
-  ...config.transformer,
-  minifierPath: require.resolve('metro-minify-terser'),
-  minifierConfig: {
-    compress: {
-      reduce_vars: true,
-      inline: true
-    },
-    mangle: true
-  },
-  // Enable async import/export
-  asyncRequireModulePath: require.resolve('metro-runtime/src/modules/asyncRequire'),
-  // Enable experimental features
-  experimentalImportSupport: true
-};
+// Optional: Add file extensions if you use more than standard ones
+config.resolver.sourceExts.push('cjs');
 
 module.exports = config;
