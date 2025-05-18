@@ -30,10 +30,12 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router",
-      {
-        "typedRoutes": true
-      }
+      [
+        "expo-router",
+        {
+          "typedRoutes": true
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
