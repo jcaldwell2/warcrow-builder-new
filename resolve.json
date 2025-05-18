@@ -1,0 +1,5 @@
+{
+  "alias": {
+    "@supabase/postgrest-js": "@supabase/postgrest-js/dist/module"
+  }
+}
