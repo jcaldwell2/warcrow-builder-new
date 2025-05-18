@@ -34,7 +34,6 @@ config.resolver.extraNodeModules = new Proxy({}, {
 // Ensure proper transformation of files
 config.transformer = {
   ...config.transformer,
-  babelTransformerPath: require.resolve('react-native-babel-transformer'),
   assetPlugins: ['expo-asset/tools/hashAssetFiles'],
 };
 
